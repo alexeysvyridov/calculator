@@ -4,24 +4,15 @@ import { Wrapper } from './Wrapper';
 import { Screen } from './Screen';
 import { ButtonBox } from './ButtonBox';
 import { Button } from './Button';
+import {removeSpaces, toLocaleString} from '../helpers';
+import {btnValues} from '../consts';
 
-const btnValues = [
-  ["C", "+-", "%", "/"],
-  [7, 8, 9, "X"],
-  [4, 5, 6, "-"],
-  [1, 2, 3, "+"],
-  [0, ".", "="],
-];
-
-const toLocaleString = (num) =>
-  String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-const removeSpaces = (num) => num.toString().replace(/\s/g, "");
 
 function App():JSX.Element {
   const [calc, setCalc] = useState<{
     sign: string,
     num: number,
-    res: number,
+    res: number | string,
   }>({
     sign: "",
     num: 0,
@@ -34,10 +25,10 @@ function App():JSX.Element {
         ...calc,
         num:
           calc.num === 0 && value === "0"
-            ? "0"
-            : removeSpaces(calc.num) % 1 === 0
-            ? toLocaleString(Number(removeSpaces(calc.num + value)))
-            : toLocaleString(calc.num + value),
+            ? 0
+            : +removeSpaces(calc.num) % 1 === 0
+            ? +toLocaleString(Number(removeSpaces(calc.num + value)))
+            : +toLocaleString(calc.num + value),
         res: !calc.sign ? 0 : calc.res,
       });
     }
@@ -55,8 +46,8 @@ function App():JSX.Element {
   const invertClickHandler = () => {
     setCalc({
       ...calc,
-      num: calc.num ? toLocaleString(removeSpaces(calc.num) * -1) : 0,
-      res: calc.res ? toLocaleString(removeSpaces(calc.res) * -1) : 0,
+      num: calc.num ? +toLocaleString(+removeSpaces(calc.num) * -1) : 0,
+      res: calc.res ? +toLocaleString(+removeSpaces(calc.res) * -1) : 0,
       sign: "",
     });
   };
@@ -85,7 +76,7 @@ function App():JSX.Element {
       setCalc({
         ...calc,
         res: 
-          calc.num === "0" && calc.sign === "/"
+          calc.num === 0 && calc.sign === "/"
           ? "Can't divide with 0"
           : toLocaleString(
               math(
@@ -111,7 +102,7 @@ function App():JSX.Element {
   const commaClickHandler = (value) => {
     setCalc({
       ...calc,
-      num: !calc.num.includes(".") ? calc.num + value : calc.num,
+      num: !calc.num.toString().includes(".") ? calc.num + value : calc.num,
     })
   };
   const handleActionClick = (btn, e) => {
@@ -145,7 +136,7 @@ function App():JSX.Element {
         break;
     }
   };
-
+  
   return (
     <Wrapper>
       <Screen value={calc.num ? calc.num : calc.res} />
