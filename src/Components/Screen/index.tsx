@@ -2,10 +2,12 @@ import React from 'react'
 import './style.css'
 export const Screen = ({
     value,
+    // historyValue
 }) => {
   return (
     <div className="screen">
-         {value}
+      <div className="result">{value}</div>
+      {/* <div className="history-box">{historyValue}</div> */}
     </div>
   )
 }

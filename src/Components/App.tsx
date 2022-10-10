@@ -139,6 +139,7 @@ function App():JSX.Element {
   
   return (
     <Wrapper>
+      {/* <Screen value={calc.res} historyValue={calc.res} /> */}
       <Screen value={calc.num ? calc.num : calc.res} />
       <ButtonBox>
         {btnValues.flat().map((btn, i) => {
