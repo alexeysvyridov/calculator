@@ -14,3 +14,6 @@ body {
   background-color: #fbb034;
   background-image: linear-gradient(315deg, #fbb034 0%, #ffdd00 74%);
 }
+li {
+  list-style: none;
+}

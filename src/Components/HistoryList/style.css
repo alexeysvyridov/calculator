@@ -1,0 +1,19 @@
+.list-box {
+    width: 350px;
+    min-height: 250px;
+    background-color: #fff;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #fff;
+    margin-left: 50px;
+}
+.list-box .row {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+    background-color: gray;
+    margin: 12px;
+    border-radius: 12px;
+    padding: 12px;
+}

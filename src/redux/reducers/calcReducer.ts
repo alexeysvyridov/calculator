@@ -6,10 +6,7 @@ export interface DefaultState {
     num: number;
     sign: string;
     history: string;
-    historyList: {
-        historyItem: string,
-        date: string,
-    }[]
+    historyList: HistoryValues[];
 }
 
 const defaultState:DefaultState = {

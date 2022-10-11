@@ -8,12 +8,12 @@ import {btnValues} from '../consts';
 import {useAppDispatch, useAppSelector} from '../hooks';
 import {commaClick, equalsClick, invertClick, numClick, percentClick, resetClick, signClick} from '../redux/reducers/calcReducer';
 import { RootState } from '../redux';
+import { HistoryList } from './HistoryList';
 
 function App():JSX.Element {
   const dispatch = useAppDispatch()
   const calc = useAppSelector((state: RootState) => state.calc);
 
-  console.log(calc);
   const handleActionClick = (btn, e) => {
     e.preventDefault()
     const value = e.target.innerHTML;
@@ -47,23 +47,24 @@ function App():JSX.Element {
   };
 
   return (
-    <Wrapper>
-      {/* <Screen value={calc.res} historyValue={calc.res} /> */}
-      <Screen value={calc.num ? calc.num : calc.res} history={calc.history} />
-      <ButtonBox>
-        {btnValues.flat().map((btn, i) => {
-          return (
-            <Button
-            key={i}
-            className={btn === "=" ? "equals" : ""}
-            value={btn}
-            onClick={(e) => handleActionClick(btn, e)}
-          />
-          )
-        })}
-    
-      </ButtonBox>
-    </Wrapper>
+    <div className="app">
+      <Wrapper>
+        <Screen value={calc.num ? calc.num : calc.res} history={calc.history} />
+        <ButtonBox>
+          {btnValues.flat().map((btn, i) => {
+            return (
+              <Button
+              key={i}
+              className={btn === "=" ? "equals" : ""}
+              value={btn}
+              onClick={(e) => handleActionClick(btn, e)}
+            />
+            )
+          })}
+        </ButtonBox>
+      </Wrapper>
+      <HistoryList historyList={calc.historyList} />    
+    </div>
   );
 }
 
