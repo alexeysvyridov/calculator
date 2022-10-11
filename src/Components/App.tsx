@@ -11,7 +11,9 @@ import { RootState } from '../redux';
 
 function App():JSX.Element {
   const dispatch = useAppDispatch()
-  const calc = useAppSelector((state: RootState) => state.calc)
+  const calc = useAppSelector((state: RootState) => state.calc);
+
+  console.log(calc);
   const handleActionClick = (btn, e) => {
     e.preventDefault()
     const value = e.target.innerHTML;
@@ -43,11 +45,11 @@ function App():JSX.Element {
         break;
     }
   };
-  
+
   return (
     <Wrapper>
       {/* <Screen value={calc.res} historyValue={calc.res} /> */}
-      <Screen value={calc.num ? calc.num : calc.res} />
+      <Screen value={calc.num ? calc.num : calc.res} history={calc.history} />
       <ButtonBox>
         {btnValues.flat().map((btn, i) => {
           return (

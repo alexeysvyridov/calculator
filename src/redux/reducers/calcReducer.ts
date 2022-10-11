@@ -5,12 +5,19 @@ export interface DefaultState {
     res: number | string;
     num: number;
     sign: string;
+    history: string;
+    historyList: {
+        historyItem: string,
+        date: string,
+    }[]
 }
 
 const defaultState:DefaultState = {
     res: 0,
     num: 0,
-    sign: '',
+    sign: '+',
+    history: '',
+    historyList: [],
 };
 
 export const calcSlice = createSlice({
@@ -21,6 +28,7 @@ export const calcSlice = createSlice({
             state.sign = "";
             state.num = 0;
             state.res = 0;
+            state.history = "";
         },
         numClick:(state, action: PayloadAction<number | string>) => {
             const value = action.payload;
@@ -32,6 +40,7 @@ export const calcSlice = createSlice({
                   ? +toLocaleString(Number(removeSpaces(state.num + value.toString())))
                   : +toLocaleString(state.num + value.toString()),
                   state.res = !state.sign ? 0 : state.res;
+                  state.history += value.toString();
             };
         },
         invertClick: (state) => {
@@ -66,14 +75,26 @@ export const calcSlice = createSlice({
                           state.sign
                         )
                     );
-                    state.sign = "";
-                    state.num = 0;
-              }
+                state.historyList = [...state.historyList, {
+                    date: new Date().toISOString(),
+                    historyItem: state.history + "=" + state.res,
+                }];
+                state.history = ""
+                state.sign = "";
+                state.num = 0;
+      
+            }
         },
         signClick: (state, action:PayloadAction<string>) => {
-            state.sign = action.payload;
             state.res = !state.res && state.num ? state.num : state.res;
             state.num = 0;
+            
+            if (state.sign !== '' && state.sign === state.history.slice(-1)) {
+                state.history = state.history.replace(state.history.slice(-1), action.payload);
+            } else {
+                state.history += action.payload;
+            }
+            state.sign = action.payload;
         },
         commaClick: (state, action:PayloadAction<number>) => {
             state.num = !state.num.toString().includes(".") ? state.num + action.payload : state.num;
